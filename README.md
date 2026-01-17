@@ -3,7 +3,7 @@
 This repository provides a reproducible Kubernetes environment running on WSL2 using kind (Kubernetes in Docker).  
 It includes a fully working setup of **JupyterLab** and **Selenium (GUI-enabled via noVNC)**, allowing you to run browser automation directly from Jupyter notebooks and visually inspect the browser through a VNC viewer.
 
-👉 **[日本語版 READMEはこちら](README.ja.md)**
+👉 **[日本語版 READMEはこちら](README_ja.md)**
 
 ---
 
