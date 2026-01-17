@@ -1,63 +1,61 @@
-# k8s_onWSL
 # Kubernetes on WSL2: Jupyter + Selenium GUI Environment
 
-WSL2 上に kind（Kubernetes in Docker）で構築した  
-**JupyterLab + Selenium（GUI / noVNC）環境**のセットアップ手順と構成ファイルです。
+This repository provides a reproducible Kubernetes environment running on WSL2 using kind (Kubernetes in Docker).  
+It includes a fully working setup of **JupyterLab** and **Selenium (GUI-enabled via noVNC)**, allowing you to run browser automation directly from Jupyter notebooks and visually inspect the browser through a VNC viewer.
 
-Jupyter から Selenium Grid に接続し、  
-GUI 付きブラウザを noVNC で確認できる開発環境を再現できます。
+👉 **[日本語版 READMEはこちら](README.ja.md)**
 
 ---
 
-## 📂 ディレクトリ構成
+## 📂 Directory Structure
 
 myk8s/
-├─ jupyter/        # JupyterLab の Deployment / Service
-├─ selenium/       # Selenium Grid の Deployment / Service
-├─ ingress/        # Ingress（Jupyter のみ外部公開）
-├─ kind/           # kind 用クラスタ設定
-├─ create.cluster.sh    # kind クラスタ作成スクリプト
+├─ jupyter/        # Deployment and Service for JupyterLab
+├─ selenium/       # Deployment and Service for Selenium Grid (Chrome + noVNC)
+├─ ingress/        # Ingress configuration (Jupyter only)
+├─ kind/           # kind cluster configuration
+├─ create.cluster.sh    # Script to create the kind cluster
 └─ README.md
 
 コード
 
 ---
 
-## 🚀 セットアップ手順
+## 🚀 Setup Instructions
 
-### 1. kind クラスタを作成
+### 1. Create the kind cluster
 
-WSL2 上で実行：
+Run the setup script inside WSL2:
 
 ```bash
 ./create.cluster.sh
-クラスタ作成後、Ingress コントローラ（ingress-nginx）が自動で起動します。
+This creates a Kubernetes cluster and installs the ingress-nginx controller automatically.
 
-2. Kubernetes リソースをデプロイ
+2. Deploy Kubernetes resources
 bash
 kubectl apply -f jupyter/
 kubectl apply -f selenium/
 kubectl apply -f ingress/
-🧪 動作確認
-1. JupyterLab にアクセス
-ブラウザで：
+🧪 Usage
+1. Access JupyterLab
+Open your browser and navigate to:
 
 コード
 http://localhost:8080/jupyter
-初回アクセス時に /jupyter/lab にリダイレクトされます。
+You will be redirected to /jupyter/lab automatically.
 
-2. Jupyter から Selenium に接続
-Jupyter Notebook で Selenium をインストール：
+2. Connect to Selenium from Jupyter
+Install Selenium inside Jupyter:
 
 python
 !pip install selenium
-Selenium Grid に接続してブラウザを起動：
+Run a simple test:
 
 python
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
-options = Options()  # headless を外すと GUI が見える
+options = Options()  # GUI mode (no headless)
 
 driver = webdriver.Remote(
     command_executor="http://selenium:4444/wd/hub",
@@ -68,39 +66,46 @@ driver.get("https://www.google.com")
 print(driver.title)
 
 driver.quit()
-🖥 GUI（noVNC）でブラウザを確認する
-Selenium の GUI は VNC（ポート 7900）で確認できます。
+This confirms that Jupyter can communicate with Selenium inside the cluster.
 
-1. ポートフォワード
+🖥 Viewing the Browser GUI (noVNC)
+Selenium provides a built-in noVNC server on port 7900.
+
+1. Port-forward the VNC port
 bash
 kubectl port-forward svc/selenium 7900:7900
-2. ブラウザでアクセス
+2. Open noVNC in your browser
 コード
 http://localhost:7900
-noVNC が表示されるので、
-パスワード secret を入力して接続します。
+When prompted for a password, enter:
 
-Jupyter から起動した Chrome の画面がリアルタイムで見えます。
+コード
+secret
+You will see the live Chrome browser session controlled by Selenium.
 
-🔧 補足：Selenium のセッションタイムアウト
-Selenium Grid はデフォルトで 5 分間操作がないとブラウザを自動終了します。
+🔧 Notes on Session Timeout
+Selenium Grid automatically closes idle browser sessions.
 
-変更したい場合は Deployment に以下を追加：
+Default timeout:
+
+コード
+SE_NODE_SESSION_TIMEOUT = 300 seconds (5 minutes)
+To extend it, modify the Selenium Deployment:
 
 yaml
 env:
   - name: SE_NODE_SESSION_TIMEOUT
-    value: "3600"   # 1時間
-📌 今後の拡張案
-Firefox ノードの追加
+    value: "3600"   # 1 hour
 
-Selenium Grid のスケールアウト
 
-Jupyter からの自動テストスクリプト化
+📌 Future Improvements
+Persist Jupyter notebooks using PVC
 
-Ingress で Selenium VNC を安全に公開
+Expose Selenium VNC via Ingress (with authentication)
 
-Helm 化 / GitHub Actions で CI/CD 化
+Convert manifests into Helm charts
 
-📝 ライセンス
-このリポジトリは自由に利用・改変できます。
+Automate deployment using GitHub Actions
+
+📝 License
+This repository is free to use and modify.
