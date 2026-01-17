@@ -25,31 +25,39 @@ myk8s/
 
 Run the setup script inside WSL2:
 
-```bash
+```
+bash
 ./create.cluster.sh
 This creates a Kubernetes cluster and installs the ingress-nginx controller automatically.
+```
 
 2. Deploy Kubernetes resources
+```
 bash
 kubectl apply -f jupyter/
 kubectl apply -f selenium/
 kubectl apply -f ingress/
+```
+
 🧪 Usage
 1. Access JupyterLab
 Open your browser and navigate to:
 
-コード
+```
 http://localhost:8080/jupyter
+```
 You will be redirected to /jupyter/lab automatically.
 
 2. Connect to Selenium from Jupyter
 Install Selenium inside Jupyter:
 
 python
+```
 !pip install selenium
 Run a simple test:
-
+```
 python
+```
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 
@@ -64,20 +72,23 @@ driver.get("https://www.google.com")
 print(driver.title)
 
 driver.quit()
+```
 This confirms that Jupyter can communicate with Selenium inside the cluster.
 
 🖥 Viewing the Browser GUI (noVNC)
 Selenium provides a built-in noVNC server on port 7900.
 
 1. Port-forward the VNC port
+```
 bash
 kubectl port-forward svc/selenium 7900:7900
+```
+
 2. Open noVNC in your browser
-コード
+```
 http://localhost:7900
 When prompted for a password, enter:
-
-コード
+```
 secret
 You will see the live Chrome browser session controlled by Selenium.
 
@@ -86,15 +97,16 @@ Selenium Grid automatically closes idle browser sessions.
 
 Default timeout:
 
-コード
+```コード
 SE_NODE_SESSION_TIMEOUT = 300 seconds (5 minutes)
 To extend it, modify the Selenium Deployment:
+```
 
-yaml
+```yaml
 env:
   - name: SE_NODE_SESSION_TIMEOUT
     value: "3600"   # 1 hour
-
+```
 
 📌 Future Improvements
 Persist Jupyter notebooks using PVC
