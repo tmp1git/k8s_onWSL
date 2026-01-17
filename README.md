@@ -8,7 +8,7 @@ It includes a fully working setup of **JupyterLab** and **Selenium (GUI-enabled 
 ---
 
 ## 📂 Directory Structure
-'''
+''
 myk8s/
 ├─ jupyter/        # Deployment and Service for JupyterLab
 ├─ selenium/       # Deployment and Service for Selenium Grid (Chrome + noVNC)
@@ -16,7 +16,7 @@ myk8s/
 ├─ kind/           # kind cluster configuration
 ├─ create.cluster.sh    # Script to create the kind cluster
 └─ README.md
-'''
+''
 ---
 
 ## 🚀 Setup Instructions
