@@ -20,7 +20,6 @@ myk8s/
 ├─ create.cluster.sh    # kind クラスタ作成スクリプト
 └─ README.ja.md
 
-コード
 
 ---
 
