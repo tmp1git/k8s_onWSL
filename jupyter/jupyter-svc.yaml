@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jupyter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: jupyter
+  template:
+    metadata:
+      labels:
+        app: jupyter
+    spec:
+      containers:
+        - name: jupyter
+          image: jupyter/base-notebook:latest
+          command: ["start-notebook.sh"]
+          args:
+            - "--ServerApp.token=''"
+            - "--ServerApp.base_url=/jupyter"
+            - "--ServerApp.allow_origin=*"
+            - "--ServerApp.ip=0.0.0.0"
+            - "--ServerApp.port=8888"
+            - "--ServerApp.open_browser=False"
+          ports:
+            - containerPort: 8888
+          env:
+            - name: JUPYTER_ENABLE_LAB
+              value: "yes"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: jupyter-svc
+spec:
+  selector:
+    app: jupyter
+  ports:
+    - port: 8888
+      targetPort: 8888

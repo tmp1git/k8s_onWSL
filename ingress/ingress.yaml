@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: my-ingress
+spec:
+  ingressClassName: nginx
+  rules:
+    - http:
+        paths:
+          - path: /jupyter
+            pathType: Prefix
+            backend:
+              service:
+                name: jupyter-svc
+                port:
+                  number: 8888

@@ -1,0 +1,8 @@
+WSL2上にkindでkubernetes環境を作るプロジェクト
+
+kind-configを適用してクラスタ作るスクリプトを
+create-cluster.shとして用意する
+
+
+ingressを使う
+webモックとスクレイピング用とjupyterサーバのpodを作る
