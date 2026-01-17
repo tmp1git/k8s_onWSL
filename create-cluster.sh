@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 1. kind クラスタ作成
-kind create cluster --config kind-config.yaml
+kind create cluster --config kind/kind-config.yaml
 
 # 2. Ingress Controller をインストール
 kubectl apply -f ingress-controller/deploy-ingress-nginx.yaml

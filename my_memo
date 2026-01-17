@@ -2,7 +2,16 @@ WSL2上にkindでkubernetes環境を作るプロジェクト
 
 kind-configを適用してクラスタ作るスクリプトを
 create-cluster.shとして用意する
+・ingressを使う
+
+Ingressを使う場合のポイント
+・複数のpod(jupyter,selenium)をkubernetesで動かし、
+　ingressでルーティングする場合、base_urlで
+　アクセスする側のlocal_host/jupyterと、
+　pod(notebook)のbase_urlを / から/jupyterに変更して対応させる必要がある。
+
+公開
 
 
-ingressを使う
+
 webモックとスクレイピング用とjupyterサーバのpodを作る
