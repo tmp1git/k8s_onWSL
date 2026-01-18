@@ -87,11 +87,13 @@ secret
 ```
 You will see the live Chrome browser session controlled by Selenium.
 
+---
+
 🔧 Notes on Session Timeout
 Selenium Grid automatically closes idle browser sessions.
 
 Default timeout:
-```コード
+```
 SE_NODE_SESSION_TIMEOUT = 300 seconds (5 minutes)
 To extend it, modify the Selenium Deployment:
 ```
@@ -101,6 +103,7 @@ env:
   - name: SE_NODE_SESSION_TIMEOUT
     value: "3600"   # 1 hour
 ```
+---
 
 📌 Future Improvements
 Persist Jupyter notebooks using PVC
@@ -110,6 +113,8 @@ Expose Selenium VNC via Ingress (with authentication)
 Convert manifests into Helm charts
 
 Automate deployment using GitHub Actions
+
+---
 
 📝 License
 This repository is free to use and modify.
