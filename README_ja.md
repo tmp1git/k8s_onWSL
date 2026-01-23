@@ -72,14 +72,34 @@ driver.quit()
 🖥 GUI（noVNC）でブラウザを確認する
 Selenium はポート 7900 で noVNC を提供しています。
 
+### noVNC パスワードの設定
+
+noVNC のパスワードは `gitignore_files/selenium-vnc-password.yaml` ファイルで設定できます：
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: selenium-vnc-password
+type: Opaque
+stringData:
+  password: "設定したいパスワード"
+```
+
+このファイルが存在しないか、ファイルが空の場合は、デフォルトのパスワード `secret` が使用されます。
+
+### noVNC へのアクセス手順
+
 1. ポートフォワード
-bash
+```bash
 kubectl port-forward svc/selenium 7900:7900
+```
+
 2. ブラウザでアクセス
 ```
 http://localhost:7900
-パスワードは：
-secret
+```
+パスワード入力時に、上記で設定したパスワード（デフォルト: secret）を入力してください。
 
 Selenium が起動した Chrome の画面がリアルタイムで表示されます。
 

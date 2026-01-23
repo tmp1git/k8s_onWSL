@@ -74,6 +74,24 @@ This confirms that Jupyter can communicate with Selenium inside the cluster.
 🖥 Viewing the Browser GUI (noVNC)
 Selenium provides a built-in noVNC server on port 7900.
 
+### noVNC Password Configuration
+
+The noVNC password can be customized by editing the `gitignore_files/selenium-vnc-password.yaml` file:
+
+```yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: selenium-vnc-password
+type: Opaque
+stringData:
+  password: "your-password-here"
+```
+
+If the file does not exist or is empty, the default password `secret` will be used.
+
+### Steps to Access noVNC
+
 1. Port-forward the VNC port
 ```bash
 kubectl port-forward svc/selenium 7900:7900
@@ -82,8 +100,7 @@ kubectl port-forward svc/selenium 7900:7900
 2. Open noVNC in your browser
 ```
 http://localhost:7900
-When prompted for a password, enter:
-secret
+When prompted for a password, enter the password configured above (default: secret)
 ```
 You will see the live Chrome browser session controlled by Selenium.
 
